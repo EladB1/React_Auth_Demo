@@ -27,7 +27,7 @@ const Login = () => {
                 <form className="form-group mx-auto border bg-light w-50 p-5" onSubmit={handleSubmit}>
                     <input className="form-control mb-1" type="text" placeholder="Username" required />
                     <input className="form-control mb-1" type="password" placeholder="Password" required />
-                    <input className="btn btn-primary" type="submit" />
+                    <input className="btn btn-primary" type="submit" value="Login"/>
                 </form>
             </div>
             {error === null ? 
