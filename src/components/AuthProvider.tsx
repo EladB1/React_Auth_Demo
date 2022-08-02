@@ -9,6 +9,7 @@ const AuthProvider = ({ children }: any) => {
     const [httpStatus, setHttpStatus] = useState<number|null>(null);
     const [error, setError] = useState<any>(null);
     const BASE_URL = 'http://localhost:8080';
+    let header: object, payload: any, signature: string;
 
     const handleLogin = async (username: string, password: string) => {
         const url: string = `${BASE_URL}/token`;
@@ -36,14 +37,23 @@ const AuthProvider = ({ children }: any) => {
                     setError(data.error)
                 else {
                     setToken(data.token);
-                    const [header, payload, signature] = jwtdecode(data.token);
-                    console.log(header);
-                    console.log(signature);
+                    [header, payload, signature] = jwtdecode(data.token);
                     setUser(payload.username);
                 }
             })
             .catch(err => setError(err));
+            if (payload)
+                autoLogout(payload);
+            
     };
+
+    const autoLogout = async (payload: any) => {
+        const diff = payload.exp - payload.iat;
+        await setTimeout(() => {
+            setToken(null);
+            setUser(undefined);
+        }, diff * 1000);
+    };  
 
     const handleLogout = async () => {
         const options: any = {
@@ -58,9 +68,8 @@ const AuthProvider = ({ children }: any) => {
         await fetch(url, options)
             .then(response => {
                 setHttpStatus(response.status);
-                return response.json();
+                console.log(response);
             })
-            .then(data => console.log(data))
             .catch(err => console.error(error));
         setToken(null);
         setUser(undefined);
