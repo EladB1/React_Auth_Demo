@@ -2,7 +2,7 @@ import { useAuth } from '../hooks/useAuth';
 import { Link } from 'react-router-dom';
 
 const Homepage = () => {
-    const { token, onLogout } = useAuth();
+    const { token, user, onLogout } = useAuth();
     return (
         <div className="container">
             <div className="row position-absolute end-0 p-5">
@@ -15,7 +15,7 @@ const Homepage = () => {
             </div>
             <div className="row">
                 <p className="display-1">Homepage</p>
-                <p>Welcome...</p>
+                <p>Welcome...{user ? user : ''}</p>
             </div>
         </div>
     );

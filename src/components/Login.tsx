@@ -30,13 +30,10 @@ const Login = () => {
                     <input className="btn btn-primary" type="submit" />
                 </form>
             </div>
-            {error === null ? <></> : <div className="">{error}</div>}
-            {/*
-                token === undefined ? <></> : 
-                <div className="w-25 mx-auto mt-2">
-                    <pre className="text-wrap" style={{wordBreak: 'break-all'}}>{token}</pre>
-                </div>
-            */}
+            {error === null ? 
+                <></> : 
+                <div className="text-danger">{error}</div>
+            }
         </div>
     );
 };
