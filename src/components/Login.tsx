@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
+import Alert from './Alert';
+
 const Login = () => {
     //const [loginError, setLoginError] = useState('');
     const navigate = useNavigate();
@@ -24,16 +26,19 @@ const Login = () => {
                 <h2 className="display-2 text-center">Login</h2>
             </div>
             <div className="row">
-                <form className="form-group mx-auto border bg-light w-50 p-5" onSubmit={handleSubmit}>
+                <form className="form-group col-md-10 mx-auto border bg-light w-50 p-5" onSubmit={handleSubmit}>
                     <input className="form-control mb-1" type="text" placeholder="Username" required />
                     <input className="form-control mb-1" type="password" placeholder="Password" required />
                     <input className="btn btn-primary" type="submit" value="Login"/>
                 </form>
+                <div className="position-relative end-0 col-md-2">
+                    {error === null ? 
+                        <></> : 
+                        <Alert alertType={"Error"} details={error} />
+                    }
+                </div>
             </div>
-            {error === null ? 
-                <></> : 
-                <div className="text-danger">{error}</div>
-            }
+            
         </div>
     );
 };

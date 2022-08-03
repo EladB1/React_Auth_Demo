@@ -1,6 +1,8 @@
 import { useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Alert from './Alert';
+
 const RegistrationForm = () => {
     const reducer = (state: any, action: any) => {
         switch(action.type) {
@@ -121,25 +123,21 @@ const RegistrationForm = () => {
             <div className="row">
                 <h2 className="display-2 text-center">Signup</h2>
             </div>
-            <div className="row">
-                <form className="form-group w-50 bg-secondary p-3 mx-auto" onSubmit={register}>
+            <div className="row p-3 mx-auto">
+                <form className="form-group w-50 h-50 bg-secondary p-3 mx-auto" onSubmit={register}>
                     <input className="form-control mb-1" type="text" placeholder="Username" required/>
                     <input className="form-control mb-1" type="password" placeholder="Password" required/>
                     <input className="form-control mb-1" type="password" placeholder="Confirm Password" required/>
                     <input className="btn btn-dark" type="submit" value="Signup" />
                 </form>
-            </div>
-            <div className="row">
-                <div className="text-danger">
-                    {registrationError.length === 0 ? '' : <ul>
+                <div className="col-md-3">
+                    {registrationError.length === 0 ? '' : <Alert alertType="Error" details={<ul>
                         {registrationError.map((error, index) =>
                             <li key={index}>{error}</li>)}
-                        </ul>
+                        </ul>} />
                     }
+                    <p className="text-success">{successful ? <Alert alertType="Success" details='Account successfully created!' /> : ''}</p>
                 </div>
-            </div>
-            <div className="row">
-                <p className="text-success">{successful ? 'Account successfully created!' : ''}</p>
             </div>
         </div>
     );
