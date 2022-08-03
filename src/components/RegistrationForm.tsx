@@ -130,7 +130,9 @@ const RegistrationForm = () => {
                     <input className="form-control mb-1" type="password" placeholder="Confirm Password" required/>
                     <input className="btn btn-dark" type="submit" value="Signup" />
                 </form>
-                <div className="col-md-3">
+            </div>
+            <div className="row">
+                <div className="mx-auto w-50 mb-5">
                     {registrationError.length === 0 ? '' : <Alert alertType="Error" details={<ul>
                         {registrationError.map((error, index) =>
                             <li key={index}>{error}</li>)}

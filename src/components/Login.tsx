@@ -26,19 +26,20 @@ const Login = () => {
                 <h2 className="display-2 text-center">Login</h2>
             </div>
             <div className="row">
-                <form className="form-group col-md-10 mx-auto border bg-light w-50 p-5" onSubmit={handleSubmit}>
+                <form className="form-group mx-auto border bg-light w-50 p-5" onSubmit={handleSubmit}>
                     <input className="form-control mb-1" type="text" placeholder="Username" required />
                     <input className="form-control mb-1" type="password" placeholder="Password" required />
                     <input className="btn btn-primary" type="submit" value="Login"/>
                 </form>
-                <div className="position-relative end-0 col-md-2">
+            </div>
+            <div className="row">
+                <div className="mt-5 mx-auto w-25">
                     {error === null ? 
-                        <></> : 
-                        <Alert alertType={"Error"} details={error} />
+                            <></> : 
+                            <Alert alertType={"Error"} details={error} />
                     }
                 </div>
             </div>
-            
         </div>
     );
 };
