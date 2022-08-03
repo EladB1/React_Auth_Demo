@@ -1,18 +1,77 @@
-import { useState } from 'react';
+import { useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const RegistrationForm = () => {
+    const reducer = (state: any, action: any) => {
+        switch(action.type) {
+            case 'append':
+                return [...state, action.error];
+            case 'reset':
+                return [];
+            default:
+                throw new Error();
+        }
+    };
+
     const navigate = useNavigate();
-    const [registrationError, setRegistrationError] = useState<string|null>(null);
+    const [registrationError, dispatch] = useReducer(reducer, []);
     const [httpStatus, setHttpStatus] = useState<number|null>(null);
     const [successful, setSuccessful] = useState<boolean>(false);
 
     const resetState = () => {
-        if (registrationError !== null)
-            setRegistrationError(null); // clear out error on submit
+        dispatch({type: 'reset'});
         if (httpStatus !== null)
             setHttpStatus(null);
     };
+
+    const addValidationError = (error: string) => {
+        dispatch({type: 'append', error: error});
+    };
+
+    const validateUsername = (username: string): boolean => {
+        let valid = true;
+        if (username.length < 5 || username.length > 20) {
+            addValidationError('Username must be between 5 and 20 characters in length');
+            valid = false;
+        }
+        const regex = /^[A-Za-z][A-Za-z0-9-_@]+$/;
+        const msg = 'Username must start with a letter and can contain letters, numbers, \'-\', \'_\', and \'@\'';
+        if (!regex.test(username)) {
+            addValidationError(msg);
+            valid = false;
+        }
+        return valid;
+    };
+
+    const validatePassword = (password: string): boolean => {
+        let valid = true;
+        if (password.length < 6 || password.length > 32) {
+            addValidationError('Password must be between 6 and 32 characters in length');
+            valid = false;
+        }
+        
+        const re_upper = /.*[A-Z].*/;
+        const re_lower = /.*[a-z].*/;
+        const re_number = /.*[0-9].*/;
+        const re_special = /.*[&*^-_@!?%#$+=,.|;:~`].*/;
+        if (!re_upper.test(password)) {
+            addValidationError('Password must contain at least one uppercase');
+            valid = false;
+        }
+        if (!re_lower.test(password)) {
+            addValidationError('Password must contain at least one lowercase');
+            valid = false;
+        }
+        if (!re_number.test(password)) {
+            addValidationError('Password must contain at least one number');
+            valid = false;
+        }
+        if (!re_special.test(password)) {
+            addValidationError('Password must contain at least one special character');
+            valid = false;
+        }
+        return valid;
+    }
 
     const register = async (event: any) => {
         event.preventDefault();
@@ -22,10 +81,11 @@ const RegistrationForm = () => {
         const confirm = event.target.elements[2].value;
         const url = 'http://localhost:8080/signup';
         if (password !== confirm) {
-            setRegistrationError('Passwords do not match.');
+            addValidationError('Passwords do not match.');
             return;
         }
-        // TODO: add required length and characters for password
+        if (!validateUsername(username) || !validatePassword(password))
+            return;
         const options: any = {
             method: 'POST',
             headers: {
@@ -45,11 +105,11 @@ const RegistrationForm = () => {
                 if (!data.Error && !data.error)
                     setSuccessful(true);
                 else if (data.error)
-                    setRegistrationError(data.error);
+                    addValidationError(data.error);
                 else
-                    setRegistrationError(data.Error);
+                addValidationError(data.Error);
             })
-            .catch(err => setRegistrationError(err));  
+            .catch(err => addValidationError(err));  
     };
 
     if (successful) {
@@ -70,7 +130,13 @@ const RegistrationForm = () => {
                 </form>
             </div>
             <div className="row">
-                <p className="text-danger">{registrationError ? registrationError : ''}</p>
+                <div className="text-danger">
+                    {registrationError.length === 0 ? '' : <ul>
+                        {registrationError.map((error, index) =>
+                            <li key={index}>{error}</li>)}
+                        </ul>
+                    }
+                </div>
             </div>
             <div className="row">
                 <p className="text-success">{successful ? 'Account successfully created!' : ''}</p>
