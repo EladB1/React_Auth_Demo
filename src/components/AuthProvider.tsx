@@ -29,7 +29,7 @@ const AuthProvider = ({ children }: any) => {
                     setHttpStatus(response.status);
                 else
                     setHttpStatus(response.status);
-                console.log(`HTTP status: ${httpStatus}`);
+                //console.log(`HTTP status: ${httpStatus}`);
                 return response.json();
             })
             .then(data => {

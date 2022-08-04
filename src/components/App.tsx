@@ -25,7 +25,7 @@ const App = () => {
                 </AuthRoute>
             } />
         </Routes>
-        <footer className="bg-dark text-white position-absolute bottom-0 container-fluid">
+        <footer className="bg-dark text-white position-fixed bottom-0 container-fluid">
             <p>&copy; company.com, 2022</p>
         </footer>
     </AuthProvider>

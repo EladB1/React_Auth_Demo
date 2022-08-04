@@ -138,7 +138,7 @@ const RegistrationForm = () => {
                             <li key={index}>{error}</li>)}
                         </ul>} />
                     }
-                    <p className="text-success">{successful ? <Alert alertType="Success" details='Account successfully created!' /> : ''}</p>
+                    <div className="text-success">{successful ? <Alert alertType="Success" details='Account successfully created!' /> : ''}</div>
                 </div>
             </div>
         </div>
