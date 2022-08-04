@@ -68,7 +68,6 @@ const AuthProvider = ({ children }: any) => {
         await fetch(url, options)
             .then(response => {
                 setHttpStatus(response.status);
-                console.log(response);
             })
             .catch(err => console.error(error));
         setToken(null);
