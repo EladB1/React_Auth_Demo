@@ -4,16 +4,17 @@ import { jwtdecode } from '../utils/JWTDecode';
 export const AuthContext = createContext<any>('');
 
 const AuthProvider = ({ children }: any) => {
-    const [token, setToken] = useState<string|null|void>(null);
+    //const [token, setToken] = useState<string|null|void>(null);
     const [user, setUser] = useState<string|undefined>(undefined);
     const [httpStatus, setHttpStatus] = useState<number|null>(null);
     const [error, setError] = useState<any>(null);
     const BASE_URL = 'http://localhost:8080';
-    let header: object, payload: any, signature: string;
+    //let header: object, payload: any, signature: string;
 
     const handleLogin = async (username: string, password: string) => {
         const url: string = `${BASE_URL}/token`;
         const options: any = {
+            credentials: 'include',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -36,22 +37,23 @@ const AuthProvider = ({ children }: any) => {
                 if (data.error)
                     setError(data.error)
                 else {
-                    setToken(data.token);
-                    [header, payload, signature] = jwtdecode(data.token);
-                    setUser(payload.username);
+                    //setToken(data.token);
+                    //[header, payload, signature] = jwtdecode(data.token);
+                    setUser(username);
                 }
             })
             .catch(err => setError(err));
-            if (payload)
-                autoLogout(payload);
+            /*if (payload)
+                autoLogout(payload);*/
             
     };
 
     const autoLogout = async (payload: any) => {
         const diff = payload.exp - payload.iat;
         await setTimeout(() => {
-            setToken(null);
+            //setToken(null);
             setUser(undefined);
+            
         }, diff * 1000);
     };  
 
@@ -60,7 +62,7 @@ const AuthProvider = ({ children }: any) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                //'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({})
         };
@@ -70,7 +72,7 @@ const AuthProvider = ({ children }: any) => {
                 setHttpStatus(response.status);
             })
             .catch(err => console.error(error));
-        setToken(null);
+        //setToken(null);
         setUser(undefined);
     };
     const clearLoginError = () => {
@@ -79,7 +81,7 @@ const AuthProvider = ({ children }: any) => {
 
 
     const value = {
-        token,
+        //token,
         user,
         error,
         onLogin: handleLogin,

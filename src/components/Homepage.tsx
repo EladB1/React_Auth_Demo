@@ -4,16 +4,19 @@ import { useAuth } from '../hooks/useAuth';
 
 const Homepage = () => {
     const [content, setContent] = useState('You are not logged in');
-    const { token, user } = useAuth();
+    const { /*token,*/ user } = useAuth();
 
-    let options = {
+    let options: any = {
+        credentials: 'include',
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
+            //'Authorization': `Bearer ${token}`,
         },
     };
 
     useEffect(() => {
+        //if (user === undefined)
+            //return;
         fetch('http://localhost:8080/', options)
             .then(response => response.text())
             .then(data => {
@@ -24,13 +27,17 @@ const Homepage = () => {
                 else
                     setContent('You are not logged in');
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                setContent('You are not logged in');
+            });
     }, []);
 
     useEffect(() => {
-        if (!token)
+        //if (!token)
+        if (user === undefined)
             setContent('You are not logged in'); // clear content on logout
-    }, [token]);
+    }, [user]);
 
     return (
         <div className="container">

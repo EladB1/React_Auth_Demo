@@ -7,11 +7,11 @@ import Alert from './Alert';
 const Login = () => {
     //const [loginError, setLoginError] = useState('');
     const navigate = useNavigate();
-    const { token, error, onLogin, clearError } = useAuth();
+    const { /*token,*/user,  error, onLogin, clearError } = useAuth();
     useEffect(() => {
-        if (token)
+        if (user)
             navigate('/');
-    }, [token, navigate])
+    }, [user, navigate])
     
     const handleSubmit = async (event: any) => {
         event.preventDefault();
