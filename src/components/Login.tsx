@@ -5,13 +5,17 @@ import { useAuth } from '../hooks/useAuth';
 import Alert from './Alert';
 
 const Login = () => {
-    //const [loginError, setLoginError] = useState('');
     const navigate = useNavigate();
-    const { /*token,*/user,  error, onLogin, clearError } = useAuth();
+    const { user,  error, onLogin, clearError } = useAuth();
     useEffect(() => {
         if (user)
             navigate('/');
-    }, [user, navigate])
+    }, [user, navigate]);
+
+    useEffect(() => {
+        // bug fix for login error that stays in place when navigating away and back from page
+        clearError();
+    }, []);
     
     const handleSubmit = async (event: any) => {
         event.preventDefault();
