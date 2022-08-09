@@ -43,14 +43,16 @@ const AuthProvider = ({ children }: any) => {
                 }
             })
             .catch(err => setError(err));
-            if (payload)
+            if (payload) {
                 autoLogout(payload);
+            }
             
     };
 
     const autoLogout = async (payload: any) => {
         const diff = payload.exp - payload.iat;
         await setTimeout(() => {
+            console.log('Autologout initiated...');
             setUser(null);
             
         }, diff * 1000);
