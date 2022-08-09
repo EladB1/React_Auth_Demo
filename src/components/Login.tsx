@@ -2,16 +2,18 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
-import Alert from './Alert';
-
 const Login = () => {
-    //const [loginError, setLoginError] = useState('');
     const navigate = useNavigate();
-    const { token, error, onLogin, clearError } = useAuth();
+    const { user,  error, onLogin, clearError } = useAuth();
     useEffect(() => {
-        if (token)
+        if (user)
             navigate('/');
-    }, [token, navigate])
+    }, [user, navigate]);
+
+    useEffect(() => {
+        // bug fix for login error that stays in place when navigating away and back from page
+        clearError();
+    }, []);
     
     const handleSubmit = async (event: any) => {
         event.preventDefault();
@@ -30,15 +32,11 @@ const Login = () => {
                     <input className="form-control mb-1" type="text" placeholder="Username" required />
                     <input className="form-control mb-1" type="password" placeholder="Password" required />
                     <input className="btn btn-primary" type="submit" value="Login"/>
-                </form>
-            </div>
-            <div className="row">
-                <div className="mt-5 mx-auto w-25">
-                    {error === null ? 
-                            <></> : 
-                            <Alert alertType={"Error"} details={error} />
+                    {
+                        error === null ? <></> :
+                        <span className="fw-light text-danger help-block m-2">{error}</span>
                     }
-                </div>
+                </form>
             </div>
         </div>
     );

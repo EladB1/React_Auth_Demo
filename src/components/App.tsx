@@ -12,24 +12,25 @@ import Sample from './Sample';
 import Nav from './Nav';
 
 const App = () => {
-  return (
-    <AuthProvider>
-        <Nav />
-        <Routes>
-            <Route path='/' element={<Homepage />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/signup' element={<RegistrationForm />} />
-            <Route path='/sample' element={
-                <AuthRoute>
-                    <Sample />
-                </AuthRoute>
-            } />
-        </Routes>
-        <footer className="bg-dark text-white position-fixed bottom-0 container-fluid">
-            <p>&copy; company.com, 2022</p>
-        </footer>
-    </AuthProvider>
-  );
+    const date: Date = new Date();
+    return (
+        <AuthProvider>
+            <Nav />
+            <Routes>
+                <Route path='/' element={<Homepage />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/signup' element={<RegistrationForm />} />
+                <Route path='/sample' element={
+                    <AuthRoute>
+                        <Sample />
+                    </AuthRoute>
+                } />
+            </Routes>
+                <footer className="bg-dark text-white position-fixed bottom-0 container-fluid">
+                    <p>&copy; company.com, {date.getFullYear()}</p>
+                </footer>
+        </AuthProvider>
+    );
 }
 
 export default App;

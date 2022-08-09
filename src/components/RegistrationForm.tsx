@@ -1,8 +1,6 @@
 import { useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Alert from './Alert';
-
 const RegistrationForm = () => {
     const reducer = (state: any, action: any) => {
         switch(action.type) {
@@ -132,14 +130,23 @@ const RegistrationForm = () => {
                 </form>
             </div>
             <div className="row">
-                <div className="mx-auto w-50 mb-5">
-                    {registrationError.length === 0 ? '' : <Alert alertType="Error" details={<ul>
-                        {registrationError.map((error, index) =>
-                            <li key={index}>{error}</li>)}
-                        </ul>} />
-                    }
-                    <div className="text-success">{successful ? <Alert alertType="Success" details='Account successfully created!' /> : ''}</div>
-                </div>
+                {registrationError.length !== 0 || successful ?
+                    <div className="mx-auto w-50 mb-5 text-center fw-light fs-4 border bg-light">
+                        {successful ? 
+                            <span className="text-success help-block m-2">Account successfully created!</span>
+                            : <></> 
+                        }
+                        {registrationError.length === 0 ? '' : 
+                            <div className="text-danger help-block m-2">
+                                <p className="fw-bold">Error(s):</p>
+                                <ul>
+                                {registrationError.map((error, index) =>
+                                    <li key={index}>{error}</li>)}
+                                </ul>
+                            </div>
+                        }
+                    </div> : 
+                <></>}
             </div>
         </div>
     );

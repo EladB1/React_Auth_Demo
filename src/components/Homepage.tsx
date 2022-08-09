@@ -4,33 +4,35 @@ import { useAuth } from '../hooks/useAuth';
 
 const Homepage = () => {
     const [content, setContent] = useState('You are not logged in');
-    const { token, user } = useAuth();
+    const { user } = useAuth();
 
-    let options = {
+    let options: any = {
+        credentials: 'include',
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
+
         },
     };
 
     useEffect(() => {
+        if (!user && content !== 'You are not logged in') {
+            setContent('You are not logged in'); // clear content on logout
+            return;
+        }
         fetch('http://localhost:8080/', options)
             .then(response => response.text())
             .then(data => {
                 let regex = /.*error.*/;
-                console.log(regex.test(data));
                 if (!regex.test(data))
                     setContent(data);
                 else
                     setContent('You are not logged in');
             })
-            .catch(err => console.log(err));
-    }, []);
-
-    useEffect(() => {
-        if (!token)
-            setContent('You are not logged in'); // clear content on logout
-    }, [token]);
+            .catch(err => {
+                console.log(err);
+                setContent('You are not logged in');
+            });
+    }, [user]);
 
     return (
         <div className="container">
