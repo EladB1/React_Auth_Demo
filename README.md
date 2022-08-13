@@ -1,5 +1,15 @@
 Frontend for `SringBoot_Auth_Demo` repo.
 
+- Backend sends a JWT inside of a HttpOnly cookie which the frontend sends to request protected data
+- The username of the logged in user is stored in LocalStorage for quick access and keeping logged in on refreshes, new windows, and new tabs
+- Logout sets the username in LocalStorage to null and clears out the cookie. The backend will also add the JWT to a list of restricted tokens
+- Auto logout after 30 minutes
+
+Built using React, Typescript, and Bootstrap
+
+---
+
+
 ## Available Scripts
 
 In the project directory, you can run:
