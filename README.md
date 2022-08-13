@@ -1,4 +1,4 @@
-Frontend for `SringBoot_Auth_Demo` repo.
+Frontend for [SringBoot_Auth_Demo](https://github.com/EladB1/SpringBoot_Auth_Demo) repo which is a simple REST API that uses JWT Authentication.
 
 - Backend sends a JWT inside of a HttpOnly cookie which the frontend sends to request protected data
 - The username of the logged in user is stored in LocalStorage for quick access and keeping logged in on refreshes, new windows, and new tabs
